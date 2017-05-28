@@ -1,9 +1,12 @@
 extern crate bit_vec;
 extern crate getopts;
 
+mod count_byte_frequencies;
 mod read_file;
 mod write_file;
-use read_file::read_file_to_bits;
+
+use count_byte_frequencies::count_byte_frequencies;
+use read_file::read_file_to_bytes;
 use write_file::write_bits_to_file;
 use getopts::Options;
 use std::env;
@@ -24,7 +27,8 @@ fn read_args() -> (String, String) {
 
 fn main() {
     let (in_filename, out_filename) = read_args();
-    let contents = read_file_to_bits(&in_filename);
-    println!("Bits: {:?}", contents);
-    write_bits_to_file(&out_filename, contents);
+    let bytes = read_file_to_bytes(&in_filename);
+    let byte_frequencies = count_byte_frequencies(bytes);
+    println!("Byte frequencies: {:?}", byte_frequencies);
+    // write_bits_to_file(&out_filename, contents);
 }

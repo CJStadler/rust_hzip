@@ -17,6 +17,7 @@ Building a Huffman encoder/decoder in Rust, for learning purposes
 
 ### Encoding
 
+- [x] Build frequency table.
 - [ ] Build the code tree from the input.
 - [ ] Write the code tree to the output.
 - [ ] Encode the message using the code tree.
