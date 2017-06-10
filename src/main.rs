@@ -1,11 +1,14 @@
 extern crate bit_vec;
 extern crate getopts;
 
-mod count_byte_frequencies;
+mod byte_node;
+mod code_map;
+mod byte_frequency_map;
 mod read_file;
 mod write_file;
 
-use count_byte_frequencies::count_byte_frequencies;
+use code_map::CodeMap;
+use byte_frequency_map::ByteFrequencyMap;
 use read_file::read_file_to_bytes;
 use write_file::write_bits_to_file;
 use getopts::Options;
@@ -28,7 +31,14 @@ fn read_args() -> (String, String) {
 fn main() {
     let (in_filename, out_filename) = read_args();
     let bytes = read_file_to_bytes(&in_filename);
-    let byte_frequencies = count_byte_frequencies(bytes);
+    let byte_frequencies = ByteFrequencyMap::from_vec(&bytes);
     println!("Byte frequencies: {:?}", byte_frequencies);
-    // write_bits_to_file(&out_filename, contents);
+
+    let code_map = CodeMap::from_frequency_map(&byte_frequencies);
+    println!("Code map: {:?}", code_map);
+
+    for byte in bytes {
+        let count = byte_frequencies.count(&byte);
+        println!("{:?}: {:?}", byte, count)
+    }
 }
