@@ -3,6 +3,7 @@ extern crate getopts;
 
 mod byte_node;
 mod code_map;
+mod code_tree;
 mod byte_frequency_map;
 mod read_file;
 mod write_file;
@@ -31,14 +32,7 @@ fn read_args() -> (String, String) {
 fn main() {
     let (in_filename, out_filename) = read_args();
     let bytes = read_file_to_bytes(&in_filename);
-    let byte_frequencies = ByteFrequencyMap::from_vec(&bytes);
-    println!("Byte frequencies: {:?}", byte_frequencies);
 
-    let code_map = CodeMap::from_frequency_map(&byte_frequencies);
+    let code_map = CodeMap::from_bytes(&bytes);
     println!("Code map: {:?}", code_map);
-
-    for byte in bytes {
-        let count = byte_frequencies.count(&byte);
-        println!("{:?}: {:?}", byte, count)
-    }
 }
