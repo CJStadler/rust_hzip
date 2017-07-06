@@ -1,6 +1,10 @@
 # Rust Hzip
 
-Building a Huffman encoder/decoder in Rust, for learning purposes
+Implementing the Huffman coding algorithm to gain experience with Rust.
+
+Inspired by a college CS assignment to implement it in Python: https://github.com/CJStadler/HZipper
+
+While working on this I became aware of a [previous implementation in Rust](http://sireliah.com/niusy/rust_huffman/). I am attempting to avoid referencing that as much as possible until I have my own working version, then I will compare and make improvements.
 
 ## TODO
 
