@@ -7,14 +7,14 @@ pub struct CodeTree {
 }
 
 impl CodeTree {
-    pub fn from_bytes(bytes: &Vec<u8>) -> CodeTree {
+    pub fn from_bytes(bytes: &[u8]) -> CodeTree {
         let frequency_map = ByteFrequencyMap::from_vec(bytes);
 
         let nodes: Vec<ByteNode> = frequency_map.iter()
             .map(|(byte, frequency)|
                 ByteNode {
-                    byte: Some(byte.clone()),
-                    frequency: frequency.clone(),
+                    byte: Some(*byte),
+                    frequency: *frequency,
                     left: None,
                     right: None
                 }
@@ -30,7 +30,7 @@ impl CodeTree {
 
 
 fn huffman(mut nodes: Vec<ByteNode>) -> ByteNode {
-    nodes.sort();
+    nodes.sort_by(|a, b| a.cmp(b).reverse());
 
     if nodes.len() == 1 {
         nodes.pop().unwrap()

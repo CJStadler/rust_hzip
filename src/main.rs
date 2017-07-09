@@ -9,7 +9,7 @@ mod read_file;
 mod write_file;
 
 use code_map::CodeMap;
-use byte_frequency_map::ByteFrequencyMap;
+use code_tree::CodeTree;
 use read_file::read_file_to_bytes;
 use write_file::write_bits_to_file;
 use getopts::Options;
@@ -32,7 +32,14 @@ fn read_args() -> (String, String) {
 fn main() {
     let (in_filename, out_filename) = read_args();
     let bytes = read_file_to_bytes(&in_filename);
+    let code_tree = CodeTree::from_bytes(&bytes);
+    let code_map = CodeMap::from_tree(code_tree);
 
-    let code_map = CodeMap::from_bytes(&bytes);
+    let encoded_bits = bytes.iter().flat_map(|byte|
+        code_map.get(byte).unwrap()
+    ).collect();
+
+    write_bits_to_file(&out_filename, &encoded_bits);
+    // write tree
     println!("Code map: {:?}", code_map);
 }
