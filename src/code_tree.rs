@@ -1,3 +1,4 @@
+use bit_vec::BitVec;
 use byte_frequency_map::ByteFrequencyMap;
 use byte_node::ByteNode;
 
@@ -26,8 +27,34 @@ impl CodeTree {
         CodeTree { root: root }
     }
 
+    pub fn as_bits(&self) -> BitVec {
+        bits_from_traversal(&self.root)
+    }
 }
 
+fn append_to_bitvec(bitvec: &mut BitVec, other: BitVec) {
+    for bit in other {
+        bitvec.push(bit);
+    }
+}
+
+fn bits_from_traversal(root: &ByteNode) -> BitVec {
+    let mut bits = BitVec::new();
+
+    if root.is_leaf() {
+        bits.push(true);
+        let byte_as_bits = BitVec::from_bytes(&[root.byte.unwrap()]);
+        append_to_bitvec(&mut bits, byte_as_bits);
+    } else {
+        bits.push(false);
+        let left_traversal = bits_from_traversal(&root.left());
+        let right_traversal = bits_from_traversal(&root.right());
+        append_to_bitvec(&mut bits, left_traversal);
+        append_to_bitvec(&mut bits, right_traversal);
+    }
+
+    bits
+}
 
 fn huffman(mut nodes: Vec<ByteNode>) -> ByteNode {
     nodes.sort_by(|a, b| a.cmp(b).reverse());

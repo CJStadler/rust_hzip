@@ -1,6 +1,6 @@
 use std::cmp::Ordering;
 
-#[derive(Debug, Eq)]
+#[derive(Clone, Debug, Eq)]
 pub struct ByteNode {
     pub byte: Option<u8>,
     pub frequency: u32,
@@ -11,6 +11,14 @@ pub struct ByteNode {
 impl ByteNode {
     pub fn is_leaf(&self) -> bool {
         self.left.is_none() && self.right.is_none()
+    }
+
+    pub fn left(&self) -> ByteNode {
+        *self.left.clone().unwrap()
+    }
+
+    pub fn right(&self) -> ByteNode {
+        *self.right.clone().unwrap()
     }
 }
 
