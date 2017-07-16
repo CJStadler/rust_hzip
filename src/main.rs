@@ -1,17 +1,18 @@
 extern crate bit_vec;
+extern crate byteorder;
 extern crate getopts;
 
 mod byte_node;
+mod byte_frequency_map;
 mod code_map;
 mod code_tree;
-mod byte_frequency_map;
+mod encoder;
 mod read_file;
 mod write_file;
 
-use code_map::CodeMap;
-use code_tree::CodeTree;
+use encoder::encode;
 use read_file::read_file_to_bytes;
-use write_file::write_bits_to_file;
+use write_file::write_bytes_to_file;
 use getopts::Options;
 use std::env;
 
@@ -32,16 +33,8 @@ fn read_args() -> (String, String) {
 fn main() {
     let (in_filename, out_filename) = read_args();
     let bytes = read_file_to_bytes(&in_filename);
-    let code_tree = CodeTree::from_bytes(&bytes);
-    let tree_bits = code_tree.as_bits();
-    let code_map = CodeMap::from_tree(code_tree);
 
-    let encoded_bits = bytes.iter().flat_map(|byte|
-        code_map.get(byte).unwrap()
-    ).collect();
+    let encoded = encode(&bytes);
 
-    write_bits_to_file(&out_filename, &tree_bits);
-    write_bits_to_file(&out_filename, &encoded_bits);
-
-    println!("Code map: {:?}", code_map);
+    write_bytes_to_file(&out_filename, &encoded);
 }

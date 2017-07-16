@@ -1,8 +1,9 @@
 [package]
 name = "rust_hzip"
 version = "0.1.0"
-authors = ["Chris Stadler <cstadler@thelevelup.com>"]
+authors = ["Chris Stadler <chrisstadler@gmail.com>"]
 
 [dependencies]
 bit-vec = "0.4.3"
+byteorder = "1.1.0"
 getopts = "0.2"

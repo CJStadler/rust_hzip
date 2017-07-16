@@ -8,9 +8,9 @@ use std::io::prelude::*;
 
 pub fn write_bytes_to_file(filename: &str, contents: &[u8]) {
     let mut file = File::create(filename).unwrap();
-    file.write_all(contents).unwrap()
+    file.write_all(contents).unwrap();
 }
 
 pub fn write_bits_to_file(filename: &str, contents: &BitVec) {
-    write_bytes_to_file(filename, &contents.to_bytes())
+    write_bytes_to_file(filename, &contents.to_bytes());
 }

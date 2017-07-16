@@ -1,6 +1,7 @@
 use bit_vec::BitVec;
 use byte_frequency_map::ByteFrequencyMap;
 use byte_node::ByteNode;
+use byteorder::{ByteOrder, LittleEndian};
 
 #[derive(Debug)]
 pub struct CodeTree {
@@ -28,7 +29,11 @@ impl CodeTree {
     }
 
     pub fn as_bits(&self) -> BitVec {
-        bits_from_traversal(&self.root)
+        let tree_bits = bits_from_traversal(&self.root);
+        let tree_length = tree_bits.len() as u16;
+        let mut tree_with_length = u16_to_bits(tree_length);
+        append_to_bitvec(&mut tree_with_length, tree_bits);
+        tree_with_length
     }
 }
 
@@ -75,4 +80,10 @@ fn huffman(mut nodes: Vec<ByteNode>) -> ByteNode {
 
         huffman(nodes)
     }
+}
+
+fn u16_to_bits(n: u16) -> BitVec {
+    let mut length_bytes = [0; 2];
+    LittleEndian::write_u16(&mut length_bytes, n);
+    BitVec::from_bytes(&length_bytes)
 }
