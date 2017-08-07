@@ -22,10 +22,10 @@ While working on this I became aware of a [previous implementation in Rust](http
 ### Encoding
 
 - [x] Build frequency table.
-- [ ] Build the code tree from the input.
-- [ ] Write the code tree to the output.
-- [ ] Encode the message using the code tree.
-- [ ] Write the encoded message to the output.
+- [x] Build the code tree from the input.
+- [x] Write the code tree to the output.
+- [x] Encode the message using the code tree.
+- [x] Write the encoded message to the output.
 
 ### Decoding
 
